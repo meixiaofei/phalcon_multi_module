@@ -15,10 +15,10 @@ class IndexController extends ControllerBase
         $user = new \User();
         $phone  = 15612345678;
         $pwd    = 123456;
-        rg_print($this->modelsManager->executeQuery('select COUNT(DISTINCT phone) AS phone FROM User')->toArray(), false);
-        rg_print($user->sql());
+//        rg_print($this->modelsManager->executeQuery('select COUNT(DISTINCT phone) AS phone FROM User')->toArray(), false);
+//        rg_print($user->sql());
 
-        $test = $user->find(["phone = $phone and password = $pwd", 'order' => 'id', 'limit' => 2]);
+        $test = $user->find(["phone = $phone and password = $pwd", 'order' => 'id', 'limit' => 20]);
         rg_print($test->toArray(), false);
         rg_print($user->sql(true));
         rg_print($this->profiler->getLastProfile()->getSqlStatement());

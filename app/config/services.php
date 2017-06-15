@@ -46,15 +46,15 @@ $di->setShared('db', function () {
 
     $eventsManager->attach('db', function ($event, $connection) use ($profiler, $config) {
         if ($event->getType() == 'beforeQuery') {
-            $profiler->startProfile($connection->getSqlStatement());
+            $profiler->startProfile($connection->getSQLStatement());
         }
         if ($event->getType() == 'afterQuery') {
             $profiler->stopProfile();
 
             if ($config->debug) {
                 $profile    = $profiler->getLastProfile();
-                $sql        = $connection->getSqlStatement();
-                $params     = $connection->getSqlVariables();
+                $sql        = $profile->getSQLStatement();
+                $params     = $profile->getSqlVariables();
                 (is_array($params) && count($params)) && $params = json_encode($params);
                 $executeTime = $profile->getTotalElapsedSeconds();
                 $logger = $this->getLogger($config->application->cacheDir. 'logs/'. date('Y-m-d'). '.log');

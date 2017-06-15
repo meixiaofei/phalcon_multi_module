@@ -54,7 +54,7 @@ class Base extends \Phalcon\Mvc\Model
 
         $sqlArr = [];
         foreach ($profiles as $profile) {
-            $sql = $profile->getSqlStatement();
+            $sql = $profile->getSQLStatement();
             if (!$getAll) {
                 return $sql;
             }

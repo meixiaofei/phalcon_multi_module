@@ -22,8 +22,8 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
 
         $loader->registerNamespaces([
-            'Application\Admin\Controllers' => __DIR__ . '/controllers/',
-            'Application\Admin\Models'      => __DIR__ . '/models/'
+            'App\Admin\Controllers' => __DIR__ . '/controllers/',
+            'App\Admin\Models'      => __DIR__ . '/models/'
         ]);
 
         $loader->register();
