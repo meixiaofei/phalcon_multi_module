@@ -2,11 +2,11 @@
 这是在自己研究学习phalcon过程中,初步总结出来的一个多模块版本。由于没有在正式项目中用过此框架,所以有考虑不到的地方,多多指正,共同进步。
 ### 演示
   "前台":  
-  <a href="http://phalcon.bingzhe.wang" target="_blank" title="位于IndexController@indexAction，实际相当于访问http://phalcon.bingzhe.wang/home/index/index">http://phalcon.bingzhe.wang</a>
-  <a href="http://phalcon.bingzhe.wang/index/register" target="_blank" title="位于IndexController@registerAction">http://phalcon.bingzhe.wang/index/register</a>
-  <a href="http://phalcon.bingzhe.wang/index/delete?id=2" target="_blank" title="位于IndexController@deleteAction">http://phalcon.bingzhe.wang/index/delete?id=2</a>
+  <a href="http://phalcon.bingzhe.wang" target="_blank" title="位于IndexController@indexAction，实际相当于访问http://phalcon.bingzhe.wang/home/index/index">http://phalcon.bingzhe.wang</a>  
+  <a href="http://phalcon.bingzhe.wang/index/register" target="_blank" title="位于IndexController@registerAction">http://phalcon.bingzhe.wang/index/register</a>  
+  <a href="http://phalcon.bingzhe.wang/index/delete?id=2" target="_blank" title="位于IndexController@deleteAction">http://phalcon.bingzhe.wang/index/delete?id=2</a>  
   "后台":  
-  <a href="http://phalcon.bingzhe.wang/admin" target="_blank" title="位于IndexController@indexActio">http://phalcon.bingzhe.wang/admin</a>
+  <a href="http://phalcon.bingzhe.wang/admin" target="_blank" title="位于IndexController@indexActio">http://phalcon.bingzhe.wang/admin</a>  
   <a href="http://phalcon.bingzhe.wang/admin/index/test" target="_blank" title="位于IndexController@testAction">http://phalcon.bingzhe.wang/admin/index/test</a>
 ### 目录结构
 
