@@ -1,5 +1,13 @@
 # phalcon_multi_module
 这是在自己研究学习phalcon过程中,初步总结出来的一个多模块版本。由于没有在正式项目中用过此框架,所以有考虑不到的地方,多多指正,共同进步。
+### 演示
+  "前台":  
+  [http://phalcon.bingzhe.wang](http://phalcon.bingzhe.wang "位于IndexController@indexAction，实际相当于访问http://phalcon.bingzhe.wang/home/index/index")  
+  [http://phalcon.bingzhe.wang/index/register](http://phalcon.bingzhe.wang/index/register "位于IndexController@registerAction")  
+  [http://phalcon.bingzhe.wang/index/delete?id=2](http://phalcon.bingzhe.wang/index/delete?id=2 "位于IndexController@deleteAction")
+  "后台":  
+  [http://phalcon.bingzhe.wang/admin](http://phalcon.bingzhe.wang/admin "位于IndexController@indexAction")  
+  [http://phalcon.bingzhe.wang/admin/index/test](http://phalcon.bingzhe.wang/admin/index/test "位于IndexController@testAction")
 ### 目录结构
 
 ~~~
