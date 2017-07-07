@@ -18,8 +18,9 @@ class IndexController extends ControllerBase
 //        rg_print($this->modelsManager->executeQuery('select COUNT(DISTINCT phone) AS phone FROM User')->toArray(), false);
 //        rg_print($user->sql());
 
-        $test = $user->find(["phone = $phone and password = $pwd", 'order' => 'id', 'limit' => 20]);
-        rg_print($test->toArray(), false);
+        $result = $user->find(["phone = $phone and password = $pwd", 'order' => 'id', 'limit' => 20]);
+        $this->view->setVars(['result' =>  $result]);
+        /*rg_print($result->toArray(), false);
         rg_print($user->sql(true));
         rg_print($this->profiler->getLastProfile()->getSqlStatement());
 
@@ -31,7 +32,7 @@ class IndexController extends ControllerBase
             ]
         ]);
 
-        rg_print($user->find('phone like \`%156%\`')->toArray(), false);
+        rg_print($user->find('phone like \`%156%\`')->toArray(), false);*/
     }
 
     public function registerAction()

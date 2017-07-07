@@ -1,2 +1,6 @@
 .idea
 .phalcon
+cache/logs/*
+cache/volt/*
+!cache/logs/.gitkeep
+!cache/volt/.gitkeep

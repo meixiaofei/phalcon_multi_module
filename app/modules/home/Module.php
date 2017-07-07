@@ -62,8 +62,8 @@ class Module implements ModuleDefinitionInterface
             $view->setViewsDir($config->get('application')->viewsDir);
             
             $view->registerEngines([
-                '.volt'  => 'voltShared',
-                '.phtml' => PhpEngine::class
+                '.html.volt'  => 'voltShared',
+//                '.phtml' => PhpEngine::class
             ]);
 
             return $view;
