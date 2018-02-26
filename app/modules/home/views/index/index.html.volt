@@ -56,7 +56,7 @@
     </div>
 </div>-->
 
-<blockquote class="layui-elem-quote layui-quote-nm" id="footer">layui 提供强力驱动</blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm" id="footer">layui 提供强力驱动, <a href="https://github.com/meixiaofei/phalcon_multi_module" target="_blank">Github地址,喜欢的就start一下吧~</a></blockquote>
 
 <style>
     input:read-only {
