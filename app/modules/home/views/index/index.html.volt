@@ -3,24 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Phalcon 3.2</title>
+    <title>Phalcon 3.2 CURD Demo</title>
     <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css?t=1515376178738" media="all">
     <style>
         body{margin: 10px;}
         .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
     </style>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
 <table class="layui-hide" id="test" lay-filter="demo"></table>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<div class="layui-tab layui-tab-brief" lay-filter="demo">
+<!--<div class="layui-tab layui-tab-brief" lay-filter="demo">
     <ul class="layui-tab-title">
         <li class="layui-this">演示说明</li>
         <li>日期</li>
@@ -53,15 +54,22 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <blockquote class="layui-elem-quote layui-quote-nm" id="footer">layui 提供强力驱动</blockquote>
 
+<style>
+    input:read-only {
+        background-color: #ccc;
+    }
+</style>
 
 <script src="//res.layui.com/layui/dist/layui.js?t=1515376178738"></script>
 <script>
     layui.config({
-        version: '1515376178738' //为了更新 js 缓存，可忽略
+        version: '1515376178738', //为了更新 js 缓存，可忽略
+        open: '[[',
+        close: ']]'
     });
 
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function(){
@@ -73,9 +81,6 @@
             ,upload = layui.upload //上传
             ,element = layui.element; //元素操作
 
-        //向世界问个好
-        layer.msg('Hello World');
-
         //监听Tab切换
         element.on('tab(demo)', function(data){
             layer.msg('切换了：'+ this.innerHTML);
@@ -85,19 +90,14 @@
         //执行一个 table 实例
         table.render({
             elem: '#test'
-            ,height: 332
-            ,url: '/demo/table/user/' //数据接口
+            ,url: '/' //数据接口
             ,page: true //开启分页
             ,cols: [[ //表头
-                {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'username', title: '用户名', width:80}
-                ,{field: 'sex', title: '性别', width:80, sort: true}
-                ,{field: 'city', title: '城市', width:80}
-                ,{field: 'sign', title: '签名', width: 170}
-                ,{field: 'experience', title: '积分', width: 80, sort: true}
-                ,{field: 'score', title: '评分', width: 80, sort: true}
-                ,{field: 'classify', title: '职业', width: 80}
-                ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                ,{field: 'phone', title: '手机号', sort: true}
+                ,{field: 'password', title: '密码', sort: true}
+                ,{field: 'created_at', title: '创建时间', sort: true}
+                ,{field: 'updated_at', title: '更新时间', sort: true}
                 ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
             ]]
         });
@@ -105,17 +105,99 @@
         //监听工具条
         table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
-                ,layEvent = obj.event; //获得 lay-event 对应的值
-            if(layEvent === 'detail'){
-                layer.msg('查看操作');
-            } else if(layEvent === 'del'){
+                ,layEvent = obj.event //获得 lay-event 对应的值
+                ,type = 'auto';
+            if (layEvent == 'add') {
+                var content = `<form><div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">手机</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+      </div>
+
+      <label class="layui-form-label">密码</label>
+      <div class="layui-input-inline">
+        <input lay-verify="required" name="password" autocomplete="off" class="layui-input">
+      </div>
+    </div></div></form>`;
+                layer.open({
+                    type: 1
+                    ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    ,id: 'layerDemo'+type //防止重复弹出
+                    ,content: content
+                    ,btn: '新增'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        var form = $('#layerDemoauto form');
+                        var phoneReg = /^1[3|4|5|7|8]\d{9}$/;
+                        if (!phoneReg.test(form.find("input[name='phone']").val())) {
+                            layer.msg('手机必须11位，只能是数字！');
+                            return;
+                        }
+                        $.post('/index/register', $('#layerDemoauto form').serialize(), function (data) {
+                            layer.msg(data.msg);
+                        });
+
+                        layer.closeAll();
+                        location.reload();
+                    }
+                });
+            }else if(layEvent === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     obj.del(); //删除对应行（tr）的DOM结构
                     layer.close(index);
                     //向服务端发送删除指令
+                    $.post('/index/delete', `id=` + [[data.id]], function (data) {
+                        layer.msg(data.msg);
+                    })
                 });
             } else if(layEvent === 'edit'){
-                layer.msg('编辑操作');
+                var content = `<form><input type="hidden" name="id" value="`+[[data.id]]+`"><div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">手机</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input" value="`+[[data.phone]]+`">
+      </div>
+
+      <label class="layui-form-label">密码</label>
+      <div class="layui-input-inline">
+        <input lay-verify="required" name="password" autocomplete="off" class="layui-input" value="`+[[data.password]]+`">
+      </div>
+
+      <label class="layui-form-label">创建时间</label>
+      <div class="layui-input-inline">
+        <input lay-verify="required" readonly autocomplete="off" class="layui-input" value="`+[[data.created_at]]+`">
+      </div>
+
+      <label class="layui-form-label">最后修改时间</label>
+      <div class="layui-input-inline">
+        <input lay-verify="required" readonly autocomplete="off" class="layui-input" value="`+[[data.updated_at]]+`">
+      </div>
+    </div></div></form>`;
+                layer.open({
+                    type: 1
+                    ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    ,id: 'layerDemo'+type //防止重复弹出
+                    ,content: content
+                    ,btn: '保存'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        var form = $('#layerDemoauto form');
+                        var phoneReg = /^1[3|4|5|7|8]\d{9}$/;
+                        if (!phoneReg.test(form.find("input[name='phone']").val())) {
+                            layer.msg('手机必须11位，只能是数字！');
+                            return;
+                        }
+                        $.post('/index/update', $('#layerDemoauto form').serialize(), function (data) {
+                            layer.msg(data.msg);
+                        });
+
+                        layer.closeAll();
+                        location.reload();
+                    }
+                });
             }
         });
 

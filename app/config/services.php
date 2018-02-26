@@ -100,8 +100,8 @@ $di->setShared('voltShared', function ($view) {
 
     $volt = new VoltEngine($view, $this);
     $volt->setOptions([
-        'compileAlways'=> $config->debug,
-        'compiledPath' => function($templatePath) use ($config) {
+        'compileAlways' => $config->debug,
+        'compiledPath'  => function($templatePath) use ($config) {
             $basePath = $config->application->appDir;
             if ($basePath && substr($basePath, 0, 2) == '..') {
                 $basePath = dirname(__DIR__);

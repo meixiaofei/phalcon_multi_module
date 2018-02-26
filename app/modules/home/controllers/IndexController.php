@@ -4,22 +4,24 @@ namespace App\Home\Controllers;
 
 class IndexController extends ControllerBase
 {
-
+    
     public function indexAction()
     {
         /*return $this->dispatcher->forward([
             'controller'    => 'index',
             'action'        => 'register'
         ]);*/
-
-        $user = new \User();
-        $phone  = 15612345678;
-        $pwd    = 123456;
+        
 //        rg_print($this->modelsManager->executeQuery('select COUNT(DISTINCT phone) AS phone FROM User')->toArray(), false);
 //        rg_print($user->sql());
-
-        $result = $user->find(["phone = $phone and password = $pwd", 'order' => 'id', 'limit' => 20]);
-        $this->view->setVars(['result' =>  $result]);
+        if ($this->request->isAjax()) {
+            $user = new \User();
+            $page   = $this->request->get('page', 'int', 1);
+            $limit  = $this->request->get('limit', 'int', 5);
+            $offset = $limit * ($page - 1);
+            $data   = $user->find(['order' => 'id', 'offset' => $offset, 'limit' => $limit]);
+            $this->view->setVars(['status' => 1, 'msg' => 'succeed', 'data' => $data, 'count' => $user::count()]);
+        }
         /*rg_print($result->toArray(), false);
         rg_print($user->sql(true));
         rg_print($this->profiler->getLastProfile()->getSqlStatement());
@@ -34,32 +36,56 @@ class IndexController extends ControllerBase
 
         rg_print($user->find('phone like \`%156%\`')->toArray(), false);*/
     }
-
+    
+    public function updateAction()
+    {
+        $user = new \User();
+        $id   = $this->request->get('id');
+        $user = $user->findFirstById($id);
+        // should be judge whether or not have this data, but I'm lazy....
+        $user->phone    = $this->request->get('phone');
+        $user->password = $this->request->get('password');
+        if ($user->save()) {
+            $data = ['msg' => 'change succeed'];
+        } else {
+            $data = ['msg' => 'something goes wrong~'];
+        }
+        
+        $this->view->setVars($data);
+    }
+    
     public function registerAction()
     {
         $user = new \User();
-
-        $user->phone = 15623530305;
-        $user->password = 123456;
-
-        rg_print($user->save());
+        
+        $user->phone    = $this->request->get('phone');
+        $user->password = $this->request->get('password');
+        if ($user->save()) {
+            $data = ['msg' => 'add succeed'];
+        } else {
+            $data = ['msg' => 'something goes wrong~'];
+        }
+        
+        $this->view->setVars($data);
     }
-
+    
     public function deleteAction()
     {
         $user = new \User();
-        $id = $this->request->get('id');
+        $id   = $this->request->get('id');
         $user = $user->findFirstById($id);
         if ($user) {
             if ($user->delete()) {
-                echo 'delete success';
+                $data = ['msg' => 'delete success'];
             } else {
-                echo 'delete failed';
+                $data = ['msg' => 'delete failed'];
             }
         } else {
-            echo 'the data identified by '. $id. 'is not exist';
+            $data = ['msg' => 'the data identified by '.$id.'is not exist'];
         }
+        
+        $this->view->setVars($data);
     }
-
+    
 }
 
